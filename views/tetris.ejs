@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <%- include('header') %>
+      <link rel='stylesheet' href='http://localhost:3000/stylesheets/tetris.css' />
+      <script src="http://localhost:3000/javascript/tetris.js"></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="/"><img src="https://daikoiws.co.jp/wp-content/themes/daiko/common/images/header_logo.png"></a>
+              
+              <div class="collapse navbar-collapse" id="navbarScroll" >
+                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll flex" style="--bs-scroll-height: 100px; margin: 0 24px">
+                  <li class="nav-item fw-bolder">
+                  </li>
+                    <a class="nav-link active" aria-current="page" href="/tetris" style="font-size: 20px">tetris</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" href="/dbCheck" style="font-size: 20px">dbCheck</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" href="/study" tabindex="-1" aria-disabled="true" style="font-size: 20px">DeepLearning-study</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" href="/paint" tabindex="-1" aria-disabled="true" style="font-size: 20px">paint</a>
+                  </li>
+                </ul>
+                <% if( !user_id ) { %>
+                    <div class="formLogin">
+                        <ul class="form-box">
+                          <a value="Login" class="form-box-login" href="/login">Login</a>
+                        </ul>
+                    </div>
+                    <h1><%= user_id %></h1>
+                <% } else { %>
+                  <div class="formLogin">
+                    <ul class="form-box">
+                      <a value="Logout" class="form-box-login" href="/logout">Logout</a>
+                      <a><%= user_id %></a>
+                    </ul>
+                </div>
+                <% } %>
+              </div>
+            </div>
+          </nav>
+          &nbsp;
+
+        <div class="wrapper-container">
+            <span class="tetris-container">
+                <canvas id="stage" width="250px" height="500px" style="background-color:black;">
+                </canvas>
+                <span class="tetris-panel-container">
+                  <p>Next:</p>
+                    <canvas id="next" width="150px" height="150px" style="background-color:black;">
+                    </canvas>
+                  <p>LINES:<span id="lines">0</span></p>
+                  <p><span id="message"></span></p>
+                  <div class="tetris-panel-container-padding"></div>
+                  <table class="tetris-button-panel">
+                    <tr>
+                      <td></td>
+                      <td id="tetris-rotate-button" class="tetris-button">↻</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td id="tetris-move-left-button"class="tetris-button">←</td>
+                      <td id="tetris-fall-button"class="tetris-button">↓</td>
+                      <td id="tetris-move-right-button"class="tetris-button">→</td>
+                    </tr>
+                  </table>
+                </span>
+            </span>
+        </div>
+        <script>
+          var tetris = new Tetris();
+          tetris.startGame();
+        </script>
+      </body>
+    
+</html>

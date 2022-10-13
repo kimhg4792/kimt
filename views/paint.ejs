@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('header') %>
+        <link rel='stylesheet' href='http://localhost:3000/stylesheets/reset.css' />
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="/"><img src="https://daikoiws.co.jp/wp-content/themes/daiko/common/images/header_logo.png"></a>
+              
+              <div class="collapse navbar-collapse" id="navbarScroll" >
+                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll flex" style="--bs-scroll-height: 100px; margin: 0 24px">
+                  <li class="nav-item fw-bolder">
+                  </li>
+                    <a class="nav-link active" aria-current="page" href="/tetris" style="font-size: 20px">tetris</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" href="/dbCheck" style="font-size: 20px">dbCheck</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" href="/study" tabindex="-1" aria-disabled="true" style="font-size: 20px">DeepLearning-study</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" href="/paint" tabindex="-1" aria-disabled="true" style="font-size: 20px">paint</a>
+                  </li>
+                </ul>
+                <% if( !user_id ) { %>
+                    <div class="formLogin">
+                        <ul class="form-box">
+                          <a value="Login" class="form-box-login" href="/login">Login</a>
+                        </ul>
+                    </div>
+                    <h1><%= user_id %></h1>
+                <% } else { %>
+                  <div class="formLogin">
+                    <ul class="form-box">
+                      <a value="Logout" class="form-box-login" href="/logout">Logout</a>
+                      <a><%= user_id %></a>
+                    </ul>
+                </div>
+                <% } %>
+              </div>
+            </div>
+          </nav>
+          &nbsp;
+
+        <canvas id="jsCanvas" class="canvas"></canvas>
+        <div class="controls">
+            <div class="controls__range">
+                <input 
+                type="range" 
+                id="jsRange" 
+                min="0.1" 
+                max="5" 
+                value="2.5" 
+                step="0.1"
+                />
+            </div>
+            <div class="controls__btns">
+                <button id="jsMode">Fill</button>
+                <button id="jsSave">Save</button>
+            </div>
+            <div class="controls__colors" id="jsColors">
+                <div class="controls__color jsColor" style="background-color:#2c2c2c"></div>
+                <div class="controls__color jsColor" style="background-color:white"></div>
+                <div class="controls__color jsColor" style="background-color:#FF3B30"></div>
+                <div class="controls__color jsColor" style="background-color:#FF9500"></div>
+                <div class="controls__color jsColor" style="background-color:#FFCC00"></div>
+                <div class="controls__color jsColor" style="background-color:#4CD963"></div>
+                <div class="controls__color jsColor" style="background-color:#5AC8FA"></div>
+                <div class="controls__color jsColor" style="background-color:#0579FF"></div>
+                <div class="controls__color jsColor" style="background-color:#5856D6"></div>
+            </div>
+        </div>
+        <script src="http://localhost:3000/javascript/paint.js"></script>
+    
+</html>
