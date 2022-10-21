@@ -1,0 +1,171 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <title>scrollTest</title>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0/dist/tf.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet@2.2.2/dist/posenet.min.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core@3.11.0/dist/tf-core.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter@3.11.0/dist/tf-converter.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl@3.11.0/dist/tf-backend-webgl.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection@0.0.6/dist/pose-detection.min.js"></script>
+    </head>
+    <style>
+         video {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+            display: block;
+
+        }
+    </style>
+    <body>
+        <div class="videos">
+            <video id="video" width="640" height="480" autoplay muted ></video>
+            <canvas id="canvas"></canvas>
+        </div>
+
+        <div id="scroll">
+            <% for(var i=1 ; i<=100; i++) { %>
+                <h2>Scroll <%= i %></h2>
+            <% } %>
+            <button onclick="topFunction()" id="myBtn">Top</button>
+          </div>
+
+    </body>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById("canvas");
+        const context = canvas.getContext("2d");
+        let maskimg = new Image();
+        maskimg.src = "http://localhost:3000/images/iron_mask.png"
+
+        let handimg = new Image();
+        handimg.src = "http://localhost:3000/images/iron_hand.png"
+
+        navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+            .then(function (stream) {
+                video.srcObject = stream;
+            });
+
+        posenet.load().then(model => {
+            video.onloadeddata = (e) => {
+                predict();
+            }
+            function predict() {
+                model.estimateSinglePose(video).then(pose => {
+                    canvas.width = video.width;
+                    canvas.height = video.height;
+                    drawKeypoints(pose.keypoints, 0.6, context);
+                    drawSkeleton(pose.keypoints, 0.6, context);
+                    for (let i = 0; i < pose.keypoints.length; i++) {
+                        if (pose.keypoints[i].part === "rightEar")
+                            context.drawImage(maskimg, pose.keypoints[i].position.x - 20, pose.keypoints[i].position.y - (maskimg.width / 2 + 30));
+                        else if (pose.keypoints[i].part === "rightWrist")
+                            context.drawImage(handimg, pose.keypoints[i].position.x - handimg.width / 2, pose.keypoints[i].position.y - handimg.height / 2);
+                        else if (pose.keypoints[i].part === "leftWrist")
+                            context.drawImage(handimg, pose.keypoints[i].position.x - handimg.width / 2, pose.keypoints[i].position.y - handimg.height / 2);
+
+                    }
+
+                });
+                requestAnimationFrame(predict);
+            }
+        })
+
+        const color = 'aqua';
+        const boundingBoxColor = 'red';
+        const lineWidth = 2;
+
+        function toTuple({ y, x }) {
+            return [y, x];
+        }
+
+        function drawPoint(ctx, y, x, r, color) {
+            ctx.beginPath();
+            ctx.arc(x, y, r, 0, 2 * Math.PI);
+            ctx.fillStyle = color;
+            ctx.fill();
+        }
+
+        /**
+         * Draws a line on a canvas, i.e. a joint
+         */
+        function drawSegment([ay, ax], [by, bx], color, scale, ctx) {
+            ctx.beginPath();
+            ctx.moveTo(ax * scale, ay * scale);
+            ctx.lineTo(bx * scale, by * scale);
+            ctx.lineWidth = lineWidth;
+            ctx.strokeStyle = color;
+            ctx.stroke();
+        }
+
+        /**
+         * Draws a pose skeleton by looking up all adjacent keypoints/joints
+         */
+        function drawSkeleton(keypoints, minConfidence, ctx, scale = 1) {
+            const adjacentKeyPoints =
+                posenet.getAdjacentKeyPoints(keypoints, minConfidence);
+
+            adjacentKeyPoints.forEach((keypoints) => {
+                drawSegment(
+                    toTuple(keypoints[0].position), toTuple(keypoints[1].position), color,
+                    scale, ctx);
+            });
+        }
+
+        /**
+         * Draw pose keypoints onto a canvas
+         */
+        function drawKeypoints(keypoints, minConfidence, ctx, scale = 1) {
+            for (let i = 0; i < keypoints.length; i++) {
+                const keypoint = keypoints[i];
+
+                if (keypoint.score < minConfidence) {
+                    continue;
+                }
+
+                const { y, x } = keypoint.position;
+                drawPoint(ctx, y * scale, x * scale, 3, color);
+            }
+        }
+
+        /**
+         * Draw the bounding box of a pose. For example, for a whole person standing
+         * in an image, the bounding box will begin at the nose and extend to one of
+         * ankles
+         */
+        function drawBoundingBox(keypoints, ctx) {
+            const boundingBox = posenet.getBoundingBox(keypoints);
+
+            ctx.rect(
+                boundingBox.minX, boundingBox.minY, boundingBox.maxX - boundingBox.minX,
+                boundingBox.maxY - boundingBox.minY);
+
+            ctx.strokeStyle = boundingBoxColor;
+            ctx.stroke();
+    }
+
+    let mybutton = document.getElementById("myBtn");
+
+          // When the user scrolls down 20px from the top of the document, show the button
+          window.onscroll = function() {scrollFunction()};
+
+          function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+              mybutton.style.display = "block";
+            } else {
+              mybutton.style.display = "none";
+            }
+          }
+
+          // When the user clicks on the button, scroll to the top of the document
+          function topFunction() {
+            document.body.scrollTop = 0; // For Safari
+            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+          }
+
+    </script>
+</html>

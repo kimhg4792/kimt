@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('header') %>
+        <title>webglPractice</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script src="http://localhost:3000/javascript/webglPractice.js"></script>
+    </head>
+        <body>
+            <div id="myDiv" style="width:100%; height:100%;"></div>
+        
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+
+
+
+            <!-- chartdata -->
+            <% var xaxis=[], yaxis=[], zaxis=[], size=[], r=[], g=[], b=[], a=[], width=[], opacity=[], type=[]; %>
+            <% for(item of chartdata) { %>
+            <% xaxis.push(item.xaxis); yaxis.push(item.yaxis); zaxis.push(item.zaxis); size.push(item.size); r.push(item.r); g.push(item.g); b.push(item.b); a.push(item.a); width.push(item.width); opacity.push(item.opacity); type.push(item.type);%>
+            <% var length = xaxis.length; %>
+            <% } %>
+            <P id="xaxis" style="display:none;"><%= xaxis %></P>
+            <P id="yaxis" style="display:none;"><%= yaxis %></P>
+            <P id="zaxis" style="display:none;"><%= zaxis %></P>
+            <P id="size" style="display:none;"><%= size %></P>
+            <P id="r" style="display:none;"><%= r %></P>
+            <P id="g" style="display:none;"><%= g %></P>
+            <P id="b" style="display:none;"><%= b %></P>
+            <P id="a" style="display:none;"><%= a %></P>
+            <P id="width" style="display:none;"><%= width %></P>
+            <P id="opacity" style="display:none;"><%= opacity %></P>
+            <P id="type" style="display:none;"><%= type %></P>
+            <!--------------->
+            <script>
+                graphic_run();
+            </script>
+        </body>
+</html>

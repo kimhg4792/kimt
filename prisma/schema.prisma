@@ -17,3 +17,18 @@ model Users {
   auth Int @default(0)
   updatedAt DateTime @updatedAt
 }
+
+model chart {
+  id Int @id @default(autoincrement())
+  xaxis Int 
+  yaxis Int 
+  zaxis Int 
+  size Int 
+  r Int 
+  g Int 
+  b Int 
+  a Float
+  width Float 
+  opacity Float
+  type String
+}

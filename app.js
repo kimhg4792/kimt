@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+
 const bodyParser = require('body-parser');
 const cookieparser = require('cookie-parser');
 const session = require('express-session');
@@ -11,6 +12,7 @@ const { title } = require('process');
 const internal = require('stream');
 const prisma = new ps.PrismaClient();
 const tensorflow = require('@tensorflow/tfjs');
+const three = require('three');
 
 const port = 3000;
 
@@ -33,8 +35,9 @@ const findUserIndex = (user_id, user_pass, user) => {
 //-----------------------------------------app.set--------------------------------------------//
 app.set('views',path.join(__dirname,'views')); // JOIN‗未使用code: 「app.set('views', __dirname + '/views');」
 app.set('view engine', 'ejs');
-app.set('layout', 'layout');               // ejs-layouts
-app.set("layout extractScripts", true);    // ejs-layouts
+//app.set('layout', 'layout');               // ejs-layouts
+//app.set("layout extractScripts", true);    // ejs-layouts
+
 
 
 
@@ -42,12 +45,17 @@ app.set("layout extractScripts", true);    // ejs-layouts
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieparser());
-app.use(express.static(path.join(__dirname, 'public'))); // public ポルダー内のファイルを使えるように設定
+
 app.use(session({
     secret: 'ambc@!vsmkv#!&*!#EDNAnsv#!$()_*#@',
     resave: false,
     saveUninitialized: true
 }));
+
+app.use(express.static(__dirname + '/public')); // public ポルダー内のファイルを使えるように設定
+app.use('/build/', express.static(path.join(__dirname, 'node_modules/three/build')));
+app.use('/jsm/', express.static(path.join(__dirname, 'node_modules/three/examples/jsm')));
+
 //app.use(expressLayouts); // ejs-layouts
 
 
@@ -129,11 +137,17 @@ app.get('/dbCheck', async function(req, res, next) {
     const user = await prisma.users.findMany();
     const a = req.session.user_uid;
 
-    if(a.auth !== 1) {
-        res.send('権限がありません。');
-    } else {
-        res.send(user);
+    try {
+        if(a.auth !== 1) {
+            res.send('権限がありません。');
+        } else {
+            res.send(user);
+        }
+
+    } catch(err) {
+        res.redirect('login');
     }
+
 
 });
 //--//
@@ -174,8 +188,68 @@ app.get('/study/imageTrace', async function(req, res, next) {
     res.render('imageTrace');
 })
 
+app.get('/study/studyTest', async function(req, res, next) {
+    res.render('studyTest');
+})
+
+app.get('/study/studyTest2', async function(req, res, next) {
+    res.render('studyTest2');
+})
+
+app.get('/study/imageLearning', async function(req, res, next) {
+    res.render('imageLearning');
+})
+
+app.get('/study/recognition', async function(req, res, next) {
+    res.render('recognition');
+})
+
+app.get('/study/scrollTest', async function(req, res, next) {
+    res.render('scrollTest');
+})
+
+app.get('/study/bodyPix', async function(req, res, next) {
+    res.render('bodyPix');
+})
+
+app.get('/study/handpose', async function(req, res, next) {
+    res.render('handpose');
+})
+
+app.get('/study/graphicTest', async function(req, res, next) {
+    res.render('graphicTest');
+})
+
+app.get('/study/webglPractice', async function(req, res, next) {
+    try {
+        const chartData = await prisma.chart.findMany({
+            select: {
+                xaxis: true,
+                yaxis: true,
+                zaxis: true,
+                size: true,
+                r: true,
+                g: true,
+                b: true,
+                a: true,
+                width: true,
+                opacity: true,
+                type: true
+            }
+        });
+    
+        res.render('webglPractice', {
+            chartdata: chartData
+        });
+    } catch(err) {
+        res.redirect('login');
+    }
+    
+})
 //--//
 
+app.get('/study/threePractice', async function(req, res, next) {
+    res.render('threePractice')
+})
 
-app.listen(port);
-console.log('start nodejs!');
+app.listen(port, () =>  console.log('start nodejs!'));
