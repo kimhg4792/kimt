@@ -14,6 +14,11 @@ model Users {
   id Int @id @default(autoincrement())
   user_id String @unique
   user_pass String
+  user_name String
+  user_birth Int
+  user_address String
+  user_emailAddress String
+  user_phone String
   auth Int @default(0)
   updatedAt DateTime @updatedAt
 }

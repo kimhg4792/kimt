@@ -1,134 +1,136 @@
-body {
+html, body {
+  margin: 0;
+  height: 100%;
+  padding: 0 2px;
+  box-sizing: border-box;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; 
+  overflow:auto;
+}
 
-    padding: 0 2px;
-    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; 
-    overflow:auto;
-  }
-  
-  a {
-    color: #00B7FF;
-  }
-  
-  .nav-link {
-    color: black;
-    margin: 0 22px;
-  }
-  
-  .main {
-      display: flex;
-    }
-  
-  .parent {
-     display: flex;
-     justify-content: center;
-     align-items: center;
-  }
-  
-  .form-box {
-    padding: 20px 20px;
-    margin: 0px 0px;
-    border-width: 50px;
-    display: block;
-  }
-  
-  .form-box-login {
-    padding : 10px 80px;
-    border-radius: 10px;
-    background-color: green;
-    color: white;
-  }
-  
-  .form-box-logout {
-    padding : 10px 80px;
-    border-radius: 10px;
-    background-color: green;
-    color: white;
-  }
-  
-  .form-box-in a{
-    padding : 15px 0px;
-    font-size: 14px;
-  }
-  
-  
-  /*      SLIDE           */
-  .slide{
-    height: 500px;
-    width: 1275px;
-    position: relative;
-    overflow: hidden;
-  }
-  .slideList{
-    width: 3825px;        
-    height: 500px;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-  .slideImg{
-    float: left;
-    width: 1275px;
-    height: 500px;
-  }
-  .slideImg img{
-    width: 100%;
-    height: 100%;
-  }
-  
-  .login{
-    width:100%;
-    height:100%;
-    margin: 0 auto;
-    text-align: center;
-  }
-  
-  .form {
-    width: 100%;
-    height:100%;
-  }
-  
-  .form ul {
-    width: 50%;
-    height: 100%;
-    margin: 0 auto;
-  }
-  
-  /* reactPractice */
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: sans-serif;
-    text-align: center;
-    min-width: 600px;
-  }
-  
-  #root {
-    margin-top: 40px;
-  }
-  
-  button {
-    display: inline-block;
-    font-size: 16px;
-    width: 200px;
-    height: 48px;
-    border-radius: 48px;
-    margin-right: 24px;
-    margin-left: 24px;
-    color: #fff;
-    background-color: #66ccff;
-    border: none;
-    outline: none;
-    box-shadow: 4px 4px #d8d8d8;
-    cursor: pointer;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-  }
-  
-  button:active {
-    position: relative;
-    top: 4px;
-    left: 4px;
-    box-shadow: none;
-  }
+li {
+  list-style-type: none;
+}
 
+#c {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.sticky {
+  position: sticky;
+  top: 0px;
+}
+
+.main {
+  background-image: url("/images/daikoiws_image.png");
+  background-size: cover;
+}
+
+canvas:focus {outline:none;}
+
+.nav-px-1-5 {
+  padding-right: 1.5rem;
+  padding-left: 1.5rem;
+  
+}
+
+.font-1-3 {font-size: 1.3rem;}
+
+.bc-g {background-color: #1DDB16;}
+
+.container {padding-top: 7rem; text-align: center;}
+
+.pd-5 {padding-top: 2rem;}
+
+.form-adj {margin-left: 15rem; margin-right: 15rem;}
+
+/*--------------------------------------------------*/
+.slider-1 {
+  height:400px;
+  position:relative;
+}
+
+
+.slider-1 > .page-btns {
+  text-align:center;
+  position:absolute;
+  bottom:20px;
+  left:0;
+  width:100%;
+}
+
+.slider-1 > .page-btns > div {
+  width:20px;
+  height:20px;
+  background-color:rgba(255,255,255,.5);
+  border-radius:4px;
+  display:inline-block;
+  cursor:pointer;
+}
+
+.slider-1 > .page-btns > div.active {
+  background-color:rgba(255,255,255,1);
+}
+
+
+
+.slider-1 > .slides > div {
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  opacity:0;
+  transition: opacity 0.3s;
+  background-position:center;
+  background-size:cover;
+  background-repeat:no-repeat;
+}
+
+.slider-1 > .slides > div.active {
+  opacity:1;
+}
+
+
+.slider-1 > .side-btns > div {
+  position:absolute;
+  top:0;
+  left:0;
+  width:25%;
+  height:100%;
+  cursor:pointer;
+}
+.slider-1 > .side-btns > div:last-child {
+  left:auto;
+  right:0;
+}
+.slider-1 >.side-btns > div > span {
+  position:absolute;
+  top:50%;
+  left:20px;
+  transform:translatey(-50%);
+  background-color:white;
+  opacity:0.5;
+  padding:1px 13px;
+  border-radius:50px;
+  font-size:25px;
+}
+.slider-1 >.side-btns > div:last-child > span {
+  left:auto;
+  right:20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/******************************************************************************/
